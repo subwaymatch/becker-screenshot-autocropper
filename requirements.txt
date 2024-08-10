@@ -1,0 +1,8 @@
+easyocr==1.7.1
+Flask==3.0.3
+numpy
+pandas
+peewee==3.17.6
+pillow==10.4.0
+psycopg2-binary==2.9.9
+uuid7==0.1.0

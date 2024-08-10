@@ -1,0 +1,23 @@
+{% extends 'base.jinja' %} {% block title %}List{% endblock %} {% block header %}
+<h1>List</h1>
+{% endblock %}
+
+{% block content %}
+  {% for item in items %}
+  <div>
+    <p>Screenshot ID: {{item["screenshot_id"]}}</p>
+    <p>original_filename: {{item['original_filename']}}</p>
+    <p>exam_section: {{item['exam_section']}}</p>
+    <p>question_id: {{item['question_id']}}</p>
+    <p>is_answered: {{item['is_answered']}}</p>
+    <p>is_correct: {{item['is_correct']}}</p>
+    <p>new_filename: {{item['new_filename']}}</p>
+    <p>file_checksum: {{item['file_checksum']}}</p>
+    
+    <img
+      src="/screenshot/{{item['new_filename']}}"
+      alt="{{item['new_filename']}}"
+    />
+  </div>
+  {% endfor %}
+{% endblock %}
