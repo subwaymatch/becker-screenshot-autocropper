@@ -135,8 +135,6 @@ def autocrop_screenshot(image_file):
     exam_section = None
 
     for r in ocr_result:
-        matched_text = r[1].upper()
-
         match = re.match(r'FAR|AUD|REG|ISC|TCP|BAR', r[1].upper())
 
         if match:
