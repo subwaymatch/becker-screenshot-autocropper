@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve the Becker screenshot autocropper app
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/becker-screenshot-autocropper
+Environment="PATH=/root/miniforge3/envs/gies/bin"
+ExecStart=/root/miniforge3/envs/gies/bin/gunicorn --bind 0.0.0.0:5000 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
