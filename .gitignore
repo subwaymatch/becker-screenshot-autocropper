@@ -12,3 +12,5 @@ docs/_build/
 config.py
 screenshot-uploads/input-images
 screenshot-uploads/output-images
+
+becker.sock
