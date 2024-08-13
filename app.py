@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_from_directory
+from flask import Flask, request, render_template, redirect, send_file
 from peewee import *
 from uuid_extensions import uuid7str
 from process_screenshot import get_file_checksum, autocrop_screenshot
@@ -41,7 +41,7 @@ def create_directories():
 
 @app.route("/")
 def home():
-    return render_template('index.jinja')
+    return redirect("/list")
 
 @app.get('/list')
 def list():
@@ -51,7 +51,12 @@ def list():
 
 @app.route('/screenshot/<string:filename>')
 def get_screenshot(filename=None):
-    return send_from_directory('screenshot-uploads/output-images', filename)
+    output_image_path = os.path.join('screenshot-uploads/output-images', filename)
+
+    if pathlib.Path(output_image_path).is_file():
+        return send_file(output_image_path)
+    else:
+        return send_file('static/images/question-placeholder.png')
 
 
 @app.get('/upload-screenshot')
@@ -93,7 +98,6 @@ def upload_screenshot_post():
             file_checksum = file_checksum
         )
 
-        image_file_extension = pathlib.Path(result['original_filename']).suffix
         output_image_save_path = os.path.join('screenshot-uploads', 'output-images', result['new_filename'])
         result['cropped_image'].save(output_image_save_path)
 
