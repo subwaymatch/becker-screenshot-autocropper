@@ -44,8 +44,19 @@ def home():
     return redirect("/list")
 
 @app.get('/list')
-def list():
-    items = Screenshot.select().dicts()
+def get_list():
+    items = Screenshot.select() \
+        .order_by(Screenshot.created_at.desc()) \
+        .dicts()
+    return render_template('list.jinja', items=items)
+
+
+@app.get('/random')
+def get_random_list():
+    items = Screenshot.select() \
+        .order_by(fn.Random()).limit(10) \
+        .order_by(Screenshot.created_at.desc()) \
+        .dicts()
     return render_template('list.jinja', items=items)
 
 
