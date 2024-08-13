@@ -4,8 +4,8 @@
 
 {% block content %}
   {% for item in items %}
-  <div class="mt-12">
-    <div class="image-metadata hidden">
+  <div class="mb-32">
+    <div class="hidden">
       <p>Screenshot ID: {{item["screenshot_id"]}}</p>
       <p>original_filename: {{item['original_filename']}}</p>
       <p>exam_section: {{item['exam_section']}}</p>
@@ -15,8 +15,49 @@
       <p>new_filename: {{item['new_filename']}}</p>
       <p>file_checksum: {{item['file_checksum']}}</p>
     </div>
+
+    <div class="grid grid-cols-4 gap-4 pb-2 text-sm">
+      <div class="border-t py-2 border-slate-400">
+        <div class="font-medium text-slate-400">Exam Section</div>
+        <div class="font-semibold text-slate-500">{{item['exam_section']}}</div>
+      </div>
+
+      <div class="border-t py-2 border-slate-400">
+        <div class="font-medium text-slate-400">Question ID</div>
+        <div class="font-semibold text-slate-500">{{item['question_id']}}</div>
+      </div>
+      
+      <div class="border-t py-2 border-slate-400">
+        <div class="font-medium text-slate-400">Created At</div>
+        <div class="font-semibold text-slate-500">{{ item['created_at'].strftime('%Y-%m-%d') }}</div>
+      </div>
+
+      {% if not item['is_answered'] %}
+        <div class="border-t py-2 border-slate-400 flex justify-between">
+          <div class="font-semibold text-slate-400">No result</div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#94a3b8" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      {% elif item['is_correct'] %}
+        <div class="border-t py-2 border-green-500 flex justify-between">
+          <div class="font-semibold text-green-500">Pass</div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#22c55e" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      {% else %}
+        <div class="border-t py-2 border-red-500 flex justify-between">
+          <div class="font-semibold text-red-500">Fail</div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ef4444" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      {% endif %}
+
+    </div>
     
-    <div class="border relative">
+    <div class="relative">
       <img
         src="/screenshot/{{item['new_filename']}}"
         alt="{{item['new_filename']}}"
