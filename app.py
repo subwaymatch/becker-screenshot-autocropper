@@ -55,7 +55,6 @@ def get_list():
 def get_random_list():
     items = Screenshot.select() \
         .order_by(fn.Random()).limit(10) \
-        .order_by(Screenshot.created_at.desc()) \
         .dicts()
     return render_template('list.jinja', items=items)
 
