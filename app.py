@@ -130,6 +130,29 @@ def upload_screenshot_post():
         #     'message': repr(err)
         # }
 
+@app.get('/delete-screenshot/<string:screenshot_id>')
+def delete_screenshot(screenshot_id):
+    record = Screenshot.get(Screenshot.screenshot_id == screenshot_id)
+    
+    pathlib.Path(
+        os.path.join(
+            './screenshot-uploads/input-images',
+            record.original_filename
+
+        )
+    ).unlink()
+
+    pathlib.Path(
+        os.path.join(
+            './screenshot-uploads/output-images',
+            record.new_filename
+        )
+    ).unlink()
+    
+    record.delete_instance()
+
+    return redirect('/')
+
 
 if __name__ == '__main__':
     create_tables()

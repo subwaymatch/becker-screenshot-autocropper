@@ -3,52 +3,71 @@
 {% endblock %}
 
 {% block content %}
+  <script>
+    function confirmAndDeleteScreenshot(screenshotId) {
+      console.log(`onDeleteClick(screenshotId=${screenshotId})`);
+
+      let confirmDelete = confirm(`Are you sure you want to delete screenshot ${screenshotId}?`);
+
+      if (confirmDelete) {
+        console.log(`Delete screenshotId=${screenshotId}`);
+        window.location = `/delete-screenshot/${screenshotId}`;
+      } else {
+        console.log(`Do nothing on screenshotId=${screenshotId}`);
+      }
+    }
+  </script>
+
   {% for item in items %}
-  <div class="mb-32">
-    <div class="hidden">
-      <p>Screenshot ID: {{item["screenshot_id"]}}</p>
-      <p>original_filename: {{item['original_filename']}}</p>
-      <p>exam_section: {{item['exam_section']}}</p>
-      <p>question_id: {{item['question_id']}}</p>
-      <p>is_answered: {{item['is_answered']}}</p>
-      <p>is_correct: {{item['is_correct']}}</p>
-      <p>new_filename: {{item['new_filename']}}</p>
-      <p>file_checksum: {{item['file_checksum']}}</p>
-    </div>
-
-    <div class="grid grid-cols-4 gap-4 pb-2 text-sm">
-      <div class="border-t py-2 border-slate-400">
-        <div class="font-medium text-slate-400">Exam Section</div>
-        <div class="font-semibold text-slate-500">{{item['exam_section']}}</div>
+    <div class="mb-32 max-w-5xl border-l-4 border-slate-200 pl-4">
+      <div class="hidden">
+        <p>Screenshot ID: {{item["screenshot_id"]}}</p>
+        <p>original_filename: {{item['original_filename']}}</p>
+        <p>exam_section: {{item['exam_section']}}</p>
+        <p>question_id: {{item['question_id']}}</p>
+        <p>is_answered: {{item['is_answered']}}</p>
+        <p>is_correct: {{item['is_correct']}}</p>
+        <p>new_filename: {{item['new_filename']}}</p>
+        <p>file_checksum: {{item['file_checksum']}}</p>
       </div>
 
-      <div class="border-t py-2 border-slate-400">
-        <div class="font-medium text-slate-400">Question ID</div>
-        <div class="font-semibold text-slate-500">{{item['question_id']}}</div>
-      </div>
-      
-      <div class="border-t py-2 border-slate-400">
-        <div class="font-medium text-slate-400">Created At</div>
-        <div class="font-semibold text-slate-500">{{ item['created_at'].strftime('%Y-%m-%d') }}</div>
-      </div>
+      <div class="grid grid-cols-4 gap-4 pb-2 text-sm">
+        <div class="">
+          <div class="font-medium text-slate-400">{{item['exam_section']}}</div>
+          <div class="font-semibold text-slate-500">{{item['question_id']}}</div>
+        </div>
+
+        <div class="border-l pl-4 border-slate-200">
+          <div class="font-medium text-slate-400">Created At</div>
+          <div class="font-semibold text-slate-500">{{ item['created_at'].strftime('%Y-%m-%d') }}</div>
+        </div>
+
+        <div class="border-l pl-4 border-slate-200">
+            <button 
+              class="inline-block bg-red-500 hover:bg-red-700 text-white text-sm font-medium py-2 px-3 rounded"
+              onclick="confirmAndDeleteScreenshot('{{ item['screenshot_id'] }}')"
+            >
+              Delete
+            </button>
+        </div>
 
       {% if not item['is_answered'] %}
-        <div class="border-t py-2 border-slate-400 flex justify-between">
-          <div class="font-semibold text-slate-400">No result</div>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#94a3b8" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        <div class="border-l pl-4 border-slate-200 flex justify-between">
+          <div class="font-semibold text-slate-300">No result</div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#94a3b8" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
           </svg>
         </div>
       {% elif item['is_correct'] %}
-        <div class="border-t py-2 border-green-500 flex justify-between">
-          <div class="font-semibold text-green-500">Pass</div>
+        <div class="border-l pl-4 border-slate-200 flex justify-between">
+          <div class="font-semibold text-slate-400">Pass</div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#22c55e" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
         </div>
       {% else %}
-        <div class="border-t py-2 border-red-500 flex justify-between">
-          <div class="font-semibold text-red-500">Fail</div>
+        <div class="border-l pl-4 border-slate-200 flex justify-between">
+          <div class="font-semibold text-slate-400">Fail</div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ef4444" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>

@@ -1,7 +1,11 @@
 {% extends 'base.jinja' %} {% block title %}Upload a screenshot{% endblock %} {% block content %}
 <h1 class="block text-xl border-b border-gray-200 font-bold pb-2 mb-4">Screenshot Upload</h1>
 <form method="POST" action="" enctype="multipart/form-data">
-  <div class="mb-4"><input type="file" name="image_file" accept="image/*" /></div>
-  <div><input type="submit" value="Submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" /></div>
+  <div class="mb-4">
+    <input type="file" name="image_file" accept="image/*" />
+  </div>
+  <div>
+    <input type="submit" value="Submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" />
+  </div>
 </form>
 {% endblock %}
